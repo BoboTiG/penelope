@@ -293,22 +293,23 @@ p.groupDefinition {
         self.files.append({"path": relative_path, "mode": mode})
 
     def write_cover(self, cover_path_absolute):
-        if cover_path_absolute is not None:
-            try:
-                basename = os.path.basename(cover_path_absolute)
-                cover_obj = io.open(cover_path_absolute, "rb")
-                cover = cover_obj.read()
-                cover_obj.close()
-                b = basename.lower()
-                mimetype = "image/jpeg"
-                if b.endswith(".png"):
-                    mimetype = "image/png"
-                elif b.endswith(".gif"):
-                    mimetype = "image/gif"
-                self.add_file_manifest(u"OEBPS/%s" % basename, basename, cover, mimetype)
-                self.cover = basename
-            except:
-                pass
+        if cover_path_absolute is None:
+            return
+        try:
+            basename = os.path.basename(cover_path_absolute)
+            cover_obj = io.open(cover_path_absolute, "rb")
+            cover = cover_obj.read()
+            cover_obj.close()
+            b = basename.lower()
+            mimetype = "image/jpeg"
+            if b.endswith(".png"):
+                mimetype = "image/png"
+            elif b.endswith(".gif"):
+                mimetype = "image/gif"
+            self.add_file_manifest(u"OEBPS/%s" % basename, basename, cover, mimetype)
+            self.cover = basename
+        except:
+            pass
 
     def write_css(self, custom_css_path_absolute):
         if self.ebook_format == self.MOBI:

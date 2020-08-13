@@ -324,10 +324,10 @@ Has synonyms:               %s
     def get_definitions(self, headword):
         if not self.has_headword(headword):
             return []
-        definitions = []
-        for index in self.entries_index[headword]:
-            definitions.append(self.entries[index].definition)
-        return definitions
+        return [
+            self.entries[index].definition
+            for index in self.entries_index[headword]
+        ]
 
     def get_synonyms(self):
         syn_with_index = []
@@ -343,8 +343,7 @@ Has synonyms:               %s
             self.entries_index_sorted = range(len(self.entries))
             return
         tmp = []
-        i = 0
-        for entry in self.entries:
+        for i, entry in enumerate(self.entries):
             first = entry.headword if by_headword else u""
             if ignore_case:
                 first = first.lower()
@@ -356,7 +355,6 @@ Has synonyms:               %s
                 second,
                 i
             ])
-            i += 1
         tmp = sorted(tmp, reverse=reverse)
         self.entries_index_sorted = []
         for t in tmp:

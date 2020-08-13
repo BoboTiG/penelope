@@ -65,7 +65,7 @@ def read(dictionary, args, input_file_paths):
             found["d.idx"] = tentative_idx
         if tentative_idx_gz in entries:
             found["d.idx.gz"] = tentative_idx_gz
-        if not (("d.idx" in found) or ("d.idx.gz" in found)):
+        if "d.idx" not in found and "d.idx.gz" not in found:
             print_error("Cannot find .idx or .idx.gz file in the given StarDict file (see StarDict spec)")
             return {}
         if tentative_dict in entries:
@@ -74,7 +74,11 @@ def read(dictionary, args, input_file_paths):
             found["d.dict.dz"] = tentative_dict_dz
         if tentative_dz in entries:
             found["d.dz"] = tentative_dz
-        if not (("d.dict" in found) or ("d.dict.dz" in found) or ("d.dz" in found)):
+        if (
+            "d.dict" not in found
+            and "d.dict.dz" not in found
+            and "d.dz" not in found
+        ):
             print_error("Cannot find .dict, .dict.dz, or .dz file in the given StarDict file (see StarDict spec)")
             return {}
         # syn is optional
@@ -329,10 +333,7 @@ def write(dictionary, args, output_file_path):
     print_debug("Writing .idx and .dict files... done", args.debug)
 
     # list files to compress
-    files_to_compress = []
-    files_to_compress.append(ifo_file_path)
-    files_to_compress.append(idx_file_path)
-
+    files_to_compress = [ifo_file_path, idx_file_path]
     # write .syn file
     dict_syns_len = 0
     if dictionary.has_synonyms:
