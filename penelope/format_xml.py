@@ -31,10 +31,10 @@ def read(dictionary, args, input_file_paths):
             headword = None
             definition = None
             for child in entry:
-                if child.tag == "key":
-                    headword = child.text
                 if child.tag == "def":
                     definition = child.text
+                elif child.tag == "key":
+                    headword = child.text
             if (headword is not None) and (definition is not None):
                 dictionary.add_entry(headword=headword, definition=definition)
         print_debug("Reading from file '%s'... success" % (input_file_path), args.debug)

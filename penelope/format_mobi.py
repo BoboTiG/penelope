@@ -60,10 +60,7 @@ def write(dictionary, args, output_file_path):
 
     # add groups
     for key in all_group_keys:
-        if key == u"SPECIAL":
-            group_entries = special_group
-        else:
-            group_entries = group_dict[key]
+        group_entries = special_group if key == u"SPECIAL" else group_dict[key]
         mobi.add_group(key, group_entries)
 
     # create output file
